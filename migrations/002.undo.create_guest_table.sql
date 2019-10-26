@@ -1,0 +1,1 @@
+DROP TABLE unity_guests
