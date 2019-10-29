@@ -3,14 +3,15 @@ const xss = require('xss')
 const path = require('path')
 const ExpensesService = require('./expenses-service')
 
-const expensesRouter = express.Router();
+const expensesRouter = express.Router()
 const jsonParser = express.json()
 
 const serializeExpense = expense => ({
     id: expense.id,
     expense: xss(expense.expense),
     note: xss(expense.note),
-    price: expense.price
+    price: expense.price,
+    eventId: expense.eventId
 })
 
 expensesRouter
@@ -19,15 +20,16 @@ expensesRouter
         ExpensesService.getAllExpenses(
             req.app.get('db')
         )
-        .then(expense => {
-            res.json(expense)
+        .then(expenses => {
+            res.json(expenses)
         })
         .catch(next)
     })
     .post(jsonParser, (req,res,next) => {
+        const {eventId} = 1
         const {expense, note, price} = req.body
-        const newExpense = {expense, note, price}
-        for(const [key,value] of Object.entries(newExpense)) {
+        const newExpense = {expense, note, price, eventId}
+        for(const [key, value] of Object.entries(newExpense)) {
             if(value == null) {
                 return res.status(400).json({
                     error: {message: `Missing ${key} in request body.`}
@@ -86,11 +88,11 @@ expensesRouter
         if(numberOfValues === 0) {
             return res.status(400).json({
                 error: {
-                    message: `Request body must contain either expense name, note, or price`
+                    message: `Request body must contain either expense name, note, event ID, or price`
                 }
             })
         }
-        GuestsService.updateExpense(
+        ExpensesService.updateExpense(
             req.app.get('db'),
             req.params.expense_id,
             expenseToUpdate

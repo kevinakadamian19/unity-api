@@ -14,15 +14,15 @@ const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'dev';
 
 app.use(morgan(morganOption));
 app.use(helmet());
-app.use(cors({CLIENT_ORIGIN}));
+app.use(
+    cors({
+        CLIENT_ORIGIN
+    })
+);
 
 app.use(`/api/expenses`, expensesRouter)
 app.use(`/api/guests`, guestsRouter)
 app.use(`/api/weddings`, weddingsRouter)
-
-app.get('/', (req, res) => {
-    res.send('Hello, world!')
-})
 
 app.use(function errorHandler(error,req,res,next) {
     let response

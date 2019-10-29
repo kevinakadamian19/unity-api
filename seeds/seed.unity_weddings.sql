@@ -1,3 +1,5 @@
-INSERT INTO unity_weddings (spending, budget)
+INSERT INTO unity_weddings (budget)
     VALUES
-    ('0', '42500');
+    ('42500'),
+    ('50000'),
+    ('36000');

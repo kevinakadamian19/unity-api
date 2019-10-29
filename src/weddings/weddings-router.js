@@ -5,12 +5,6 @@ const WeddingsService = require('./weddings-service')
 const weddingsRouter = express.Router()
 const jsonParser = express.json()
 
-const serializeWedding = wedding => ({
-    id: wedding.id,
-    spending: wedding.spending,
-    budget: (wedding.budget)
-})
-
 weddingsRouter
     .route('/')
     .get((req, res, next) => {
@@ -23,17 +17,14 @@ weddingsRouter
         .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-        const {spending, budget} = req.body
-        const newWedding = {spending, budget}
-
-        for(const [key, value] of Object.entries(newWedding)) {
-            if(value == null) {
-                return res.status(400).json({
-                    error: {
-                        message: `Missing ${key} in request body.`
-                    }
-                })
-            }
+        const { budget } = req.body;
+        const newWedding = {budget};
+        if(!budget) {
+            return res.status(400).json({
+                error: {
+                    message: `Budget must be in request body to add wedding.`
+                }
+            })
         }
         WeddingsService.insertWedding(
             req.app.get('db'),
@@ -67,7 +58,7 @@ weddingsRouter
         .catch(next)
     })
     .get((req, res, next) => {
-        res.json(serializeWedding(res.wedding))
+        res.json(res.wedding)
     })
     .delete((req, res, next) => {
         WeddingsService.deleteWedding(
@@ -79,15 +70,11 @@ weddingsRouter
         })
     })
     .patch(jsonParser, (req, res, next) => {
-        const {spending, budget} = req.body
-        const weddingToUpdate = {spending, budget}
-
-        numberofValues = Object.values(weddingToUpdate).filter(Boolean).length
-        if(numberOfValues === 0) {
+        const {budget} = req.body
+        const weddingToUpdate = {budget}
+        if(!budget) {
             return res.status(404).json({
-                error: {
-                    message: `Request body must contain spending, or budget`
-                }
+                error: {message: `Budget is required in request body.`}
             })
         }
         WeddingsService.updateWedding(
