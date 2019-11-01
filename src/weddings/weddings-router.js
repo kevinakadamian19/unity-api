@@ -33,7 +33,7 @@ weddingsRouter
         .then(wedding => {
             res
                 .status(201)
-                .location(path.posix.join(req.originaUrl, `${wedding.id}`))
+                .location(path.posix.join(req.originalUrl, `${wedding.id}`))
                 .json(wedding)
         })
         .catch(next)
@@ -68,6 +68,7 @@ weddingsRouter
         .then(() => {
             res.status(204).end()
         })
+        .catch(next)
     })
     .patch(jsonParser, (req, res, next) => {
         const {budget} = req.body

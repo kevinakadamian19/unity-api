@@ -3,33 +3,34 @@ const xss = require('xss')
 const path = require('path')
 const ExpensesService = require('./expenses-service')
 
-const expensesRouter = express.Router()
-const jsonParser = express.json()
+const expensesRouter = express.Router();
+const jsonParser = express.json();
+
 
 const serializeExpense = expense => ({
     id: expense.id,
-    expense: xss(expense.expense),
+    vendor: xss(expense.vendor),
     note: xss(expense.note),
     price: expense.price,
-    eventId: expense.eventId
+    event: expense.event
 })
 
 expensesRouter
     .route('/')
     .get((req, res, next) => {
+        const knexInstance = req.app.get('db')
         ExpensesService.getAllExpenses(
-            req.app.get('db')
+            knexInstance
         )
         .then(expenses => {
-            res.json(expenses)
+            res.json(expenses.map(serializeExpense))
         })
         .catch(next)
     })
-    .post(jsonParser, (req,res,next) => {
-        const {eventId} = 1
-        const {expense, note, price} = req.body
-        const newExpense = {expense, note, price, eventId}
-        for(const [key, value] of Object.entries(newExpense)) {
+    .post(jsonParser, (req, res, next) => {
+        const { vendor, note, price, event} = req.body
+        const newExpense = { vendor, note, price, event }
+        for(const [key,value] of Object.entries(newExpense)) {
             if(value == null) {
                 return res.status(400).json({
                     error: {message: `Missing ${key} in request body.`}
@@ -39,12 +40,12 @@ expensesRouter
         ExpensesService.insertExpense(
             req.app.get('db'),
             newExpense
-        )
+        )   
         .then(expense => {
             res
                 .status(201)
                 .location(path.posix.join(req.originalUrl, `${expense.id}`))
-                .json(expense)
+                .json(serializeExpense(expense))
         })
         .catch(next)
     })
@@ -75,20 +76,20 @@ expensesRouter
             req.app.get('db'),
             req.params.expense_id
         )
-        .then(() => {
+        .then(numRowsAffected => {
             res.status(204).end()
         })
         .catch(next)
     })
     .patch(jsonParser, (req, res, next) => {
-        const {expense, note, price} = req.body
-        const expenseToUpdate = {expense, note, price}
+        const {vendor, price} = req.body
+        const expenseToUpdate = {vendor, price}
 
         const numberOfValues = Object.values(expenseToUpdate).filter(Boolean).length
         if(numberOfValues === 0) {
             return res.status(400).json({
                 error: {
-                    message: `Request body must contain either expense name, note, event ID, or price`
+                    message: `Request body must contain either vendor, note, or price`
                 }
             })
         }

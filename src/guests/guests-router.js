@@ -18,14 +18,14 @@ guestsRouter
         GuestsService.getAllGuests(
             req.app.get('db')
         )
-        .then(guest => {
-            res.json(guest)
+        .then(guests => {
+            res.json(guests.map(serializeGuest))
         })
         .catch(next)
     })
     .post(jsonParser, (req,res,next) => {
-        const {name, email} = req.body
-        const newGuest = {name, email}
+        const {name, email, event} = req.body
+        const newGuest = {name, email, event}
         for(const [key,value] of Object.entries(newGuest)) {
             if(value == null) {
                 return res.status(400).json({
@@ -78,14 +78,14 @@ guestsRouter
         .catch(next)
     })
     .patch(jsonParser, (req, res, next) => {
-        const {name, email} = req.body
-        const guestToUpdate = {name, email}
+        const {name, email, event} = req.body
+        const guestToUpdate = {name, email, event}
 
         const numberOfValues = Object.values(guestToUpdate).filter(Boolean).length
         if(numberOfValues === 0) {
             return res.status(400).json({
                 error: {
-                    message: `Request body must contain either name, or email`
+                    message: `Request body must contain either name, event id, or email`
                 }
             })
         }

@@ -1,6 +1,6 @@
 const ExpensesService = {
     getAllExpenses(knex) {
-        return knex.select('*').from('unity_expenses');
+        return knex.select('*').from('unity_expenses')
     },
     insertExpense(knex, newExpense) {
         return knex

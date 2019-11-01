@@ -9,8 +9,10 @@ const guestsRouter = require('./guests/guests-router')
 const weddingsRouter = require('./weddings/weddings-router')
 
 
+
 const app = express();
 const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'dev';
+
 
 app.use(morgan(morganOption));
 app.use(helmet());
@@ -19,10 +21,9 @@ app.use(
         CLIENT_ORIGIN
     })
 );
-
-app.use(`/api/expenses`, expensesRouter)
-app.use(`/api/guests`, guestsRouter)
 app.use(`/api/weddings`, weddingsRouter)
+app.use(`/api/guests`, guestsRouter)
+app.use(`/api/expenses`, expensesRouter)
 
 app.use(function errorHandler(error,req,res,next) {
     let response
