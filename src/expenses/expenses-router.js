@@ -42,6 +42,7 @@ expensesRouter
             newExpense
         )   
         .then(expense => {
+            console.log('here')
             res
                 .status(201)
                 .location(path.posix.join(req.originalUrl, `${expense.id}`))

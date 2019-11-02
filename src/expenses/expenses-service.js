@@ -6,8 +6,11 @@ const ExpensesService = {
         return knex
             .insert(newExpense)
             .into('unity_expenses')
-            .select('*')
+            .returning('*')
             .then(rows => {
+                console.log(rows);
+                console.log(rows);
+                console.log(rows);
                 return rows[0]
             })
     },

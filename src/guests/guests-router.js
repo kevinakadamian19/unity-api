@@ -38,6 +38,10 @@ guestsRouter
             newGuest
         )
         .then(guest => {
+            console.log(guest)
+            console.log(guest)
+            console.log(guest)
+            console.log(guest)
             res
                 .status(201)
                 .location(path.posix.join(req.originalUrl, `${guest.id}`))
