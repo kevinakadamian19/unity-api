@@ -73,6 +73,7 @@ weddingsRouter
     .patch(jsonParser, (req, res, next) => {
         const {budget} = req.body
         const weddingToUpdate = {budget}
+        console.log(budget, weddingToUpdate)
         if(!budget) {
             return res.status(404).json({
                 error: {message: `Budget is required in request body.`}
@@ -85,6 +86,7 @@ weddingsRouter
         )
         .then(numRowsAffected => {
             res.status(204).end()
+            
         })
         .catch(next)
     })
