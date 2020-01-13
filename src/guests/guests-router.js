@@ -9,7 +9,8 @@ const jsonParser = express.json()
 const serializeGuest = guest => ({
     id: guest.id,
     name: xss(guest.name),
-    email: xss(guest.email)
+    email: xss(guest.email),
+    event: guest.event
 })
 
 guestsRouter
