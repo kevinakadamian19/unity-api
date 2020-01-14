@@ -10,7 +10,7 @@ const serializeGuest = guest => ({
     id: guest.id,
     name: xss(guest.name),
     email: xss(guest.email),
-    event: guest.event
+    event_id: guest.event_id
 })
 
 guestsRouter
@@ -25,8 +25,8 @@ guestsRouter
         .catch(next)
     })
     .post(jsonParser, (req,res,next) => {
-        const {name, email, event} = req.body
-        const newGuest = {name, email, event}
+        const {name, email, event_id} = req.body
+        const newGuest = {name, email, event_id}
         for(const [key,value] of Object.entries(newGuest)) {
             if(value == null) {
                 return res.status(400).json({
@@ -79,8 +79,8 @@ guestsRouter
         .catch(next)
     })
     .patch(jsonParser, (req, res, next) => {
-        const {name, email, event} = req.body
-        const guestToUpdate = {name, email, event}
+        const {name, email, event_id} = req.body
+        const guestToUpdate = {name, email, event_id}
 
         const numberOfValues = Object.values(guestToUpdate).filter(Boolean).length
         if(numberOfValues === 0) {

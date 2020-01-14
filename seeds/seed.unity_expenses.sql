@@ -1,4 +1,4 @@
-INSERT INTO unity_expenses (vendor, note, price, event)
+INSERT INTO unity_expenses (vendor, note, price, event_id)
     VALUES
-    ('Kiki Delivery Service', 'Catering', '1000', '1'),
-    ('Howl Moving Castle', 'Venue', '2500', '1');
+    ('Auntie Anne', 'Catering', '1000', '1'),
+    ('The Venue', 'Venue', '2500', '1');

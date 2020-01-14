@@ -12,7 +12,7 @@ const serializeExpense = expense => ({
     vendor: xss(expense.vendor),
     note: xss(expense.note),
     price: expense.price,
-    event: expense.event
+    event: expense.event_id
 })
 
 expensesRouter
@@ -28,8 +28,8 @@ expensesRouter
         .catch(next)
     })
     .post(jsonParser, (req, res, next) => {
-        const { vendor, note, price, event} = req.body
-        const newExpense = { vendor, note, price, event }
+        const { vendor, note, price, event_id} = req.body
+        const newExpense = { vendor, note, price, event_id }
         for(const [key,value] of Object.entries(newExpense)) {
             if(value == null) {
                 return res.status(400).json({

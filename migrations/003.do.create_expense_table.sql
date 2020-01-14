@@ -3,5 +3,5 @@ CREATE TABLE unity_expenses (
     vendor TEXT NOT NULL,
     note TEXT,
     price INTEGER NOT NULL,
-    event INTEGER REFERENCES unity_weddings(id) NOT NULL
+    event_id INTEGER REFERENCES unity_weddings(id) NOT NULL
 );

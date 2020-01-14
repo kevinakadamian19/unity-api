@@ -8,11 +8,8 @@ const expensesRouter = require('./expenses/expenses-router')
 const guestsRouter = require('./guests/guests-router')
 const weddingsRouter = require('./weddings/weddings-router')
 
-
-
 const app = express();
 const morganOption = (NODE_ENV === 'production') ? 'tiny' : 'dev';
-
 
 app.use(morgan(morganOption));
 app.use(helmet());

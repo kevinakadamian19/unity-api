@@ -1,4 +1,4 @@
-INSERT INTO unity_guests (name, email, event)
+INSERT INTO unity_guests (name, email, event_id)
     VALUES
-    ('Totoro', 'leaffloater@gmail.com', '1'),
-    ('Princess Mononoke', 'wolfprincess19@yahoo.com', '1');
+    ('John Doe', 'johndoe@gmail.com', '1'),
+    ('Jane Doe', 'janedoe@yahoo.com', '1');
